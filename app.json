@@ -31,7 +31,6 @@
         "expo-build-properties",
         {
           "android": {
-            "newArchEnabled": false,
             "compileSdkVersion": 36,
             "targetSdkVersion": 36,
             "buildToolsVersion": "36.0.0"
@@ -39,14 +38,14 @@
         }
       ],
       [
-        "@react-native-voice/voice",
+        "expo-speech-recognition",
         {
           "microphonePermission": "Permitir NutriCheck usar o microfone para gravar relato alimentar",
-          "speechRecognitionPermission": "Permitir NutriCheck reconhecer sua voz para transcrever o relato"
+          "speechRecognitionPermission": "Permitir NutriCheck reconhecer sua voz para transcrever o relato",
+          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
         }
       ]
     ],
-    "newArchEnabled": false,
     "extra": {
       "eas": {
         "projectId": "ddaf0b98-c4b9-45d0-965c-7c588014009c"
