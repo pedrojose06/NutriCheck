@@ -28,6 +28,14 @@
     "plugins": [
       "expo-secure-store",
       [
+        "expo-build-properties",
+        {
+          "android": {
+            "newArchEnabled": false
+          }
+        }
+      ],
+      [
         "@react-native-voice/voice",
         {
           "microphonePermission": "Permitir NutriCheck usar o microfone para gravar relato alimentar",
