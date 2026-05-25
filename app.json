@@ -35,6 +35,12 @@
         }
       ]
     ],
-    "newArchEnabled": false
+    "newArchEnabled": false,
+    "extra": {
+      "eas": {
+        "projectId": "ddaf0b98-c4b9-45d0-965c-7c588014009c"
+      }
+    },
+    "owner": "pedrojose06"
   }
 }
