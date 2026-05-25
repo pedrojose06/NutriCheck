@@ -25,6 +25,7 @@ const HISTORY_KEY = '@nutricheck_history';
 export default function DiarioScreen() {
   const {
     isRecording,
+    isAvailable: voiceAvailable,
     transcript,
     partialTranscript,
     error: voiceError,
@@ -113,7 +114,7 @@ export default function DiarioScreen() {
     ? partialTranscript || editableText
     : editableText;
 
-  const showTranscriptArea = editableText || isRecording;
+  const showTranscriptArea = editableText || isRecording || !voiceAvailable;
   const showAnalyzeBtn = editableText && !isRecording;
 
   return (
@@ -143,7 +144,9 @@ export default function DiarioScreen() {
               ? '✅ Análise concluída!'
               : phase === 'transcribed'
               ? '✅ Relato capturado — revise e analise'
-              : '🎤 Toque para relatar sua alimentação do dia'}
+              : voiceAvailable
+              ? '🎤 Toque para relatar sua alimentação do dia'
+              : '✏️ Digite seu relato alimentar abaixo'}
           </Text>
 
           <MicButton
