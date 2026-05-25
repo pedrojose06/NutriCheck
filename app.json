@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "NutriCheck",
+    "slug": "nutricheck",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "nutricheck",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.nutricheck.app",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "NutriCheck precisa do microfone para gravar seu relato alimentar diário.",
+        "NSSpeechRecognitionUsageDescription": "NutriCheck usa reconhecimento de voz para transcrever seu relato alimentar."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#2d6a4f"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.INTERNET",
+        "android.permission.WAKE_LOCK"
+      ],
+      "package": "com.nutricheck.app"
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": "Permitir NutriCheck usar o microfone para gravar relato alimentar",
+          "speechRecognitionPermission": "Permitir NutriCheck reconhecer sua voz para transcrever o relato"
+        }
+      ]
+    ],
+    "newArchEnabled": false
+  }
+}
