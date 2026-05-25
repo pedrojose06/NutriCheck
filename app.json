@@ -31,18 +31,10 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 36,
-            "targetSdkVersion": 36,
-            "buildToolsVersion": "36.0.0"
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
           }
-        }
-      ],
-      [
-        "expo-speech-recognition",
-        {
-          "microphonePermission": "Permitir NutriCheck usar o microfone para gravar relato alimentar",
-          "speechRecognitionPermission": "Permitir NutriCheck reconhecer sua voz para transcrever o relato",
-          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
         }
       ]
     ],
