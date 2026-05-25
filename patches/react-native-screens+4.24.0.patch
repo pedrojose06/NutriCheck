@@ -1,0 +1,214 @@
+diff --git a/node_modules/react-native-screens/src/fabric/FullWindowOverlayNativeComponent.ts b/node_modules/react-native-screens/src/fabric/FullWindowOverlayNativeComponent.ts
+index 4906480..a179702 100644
+--- a/node_modules/react-native-screens/src/fabric/FullWindowOverlayNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/FullWindowOverlayNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps } from 'react-native';
++import type { ViewProps } from 'react-native';
+ 
+ // Internal export, not part of stable library API.
+ export interface NativeProps extends ViewProps {
+diff --git a/node_modules/react-native-screens/src/fabric/ModalScreenNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ModalScreenNativeComponent.ts
+index 9005280..2abda81 100644
+--- a/node_modules/react-native-screens/src/fabric/ModalScreenNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ModalScreenNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps, ColorValue } from 'react-native';
++import type { ViewProps, ColorValue } from 'react-native';
+ 
+ // eslint-disable-next-line @typescript-eslint/ban-types
+ type ScreenEvent = Readonly<{}>;
+diff --git a/node_modules/react-native-screens/src/fabric/ScreenNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenNativeComponent.ts
+index 257e9e4..2b6b707 100644
+--- a/node_modules/react-native-screens/src/fabric/ScreenNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ScreenNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps, ColorValue } from 'react-native';
++import type { ViewProps, ColorValue } from 'react-native';
+ 
+ // eslint-disable-next-line @typescript-eslint/ban-types
+ type ScreenEvent = Readonly<{}>;
+diff --git a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
+index fcbb268..1d18ed3 100644
+--- a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderConfigNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps, ColorValue } from 'react-native';
++import type { ViewProps, ColorValue } from 'react-native';
+ 
+ type DirectionType = 'rtl' | 'ltr';
+ 
+diff --git a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderSubviewNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderSubviewNativeComponent.ts
+index 61da7f7..5d33277 100644
+--- a/node_modules/react-native-screens/src/fabric/ScreenStackHeaderSubviewNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ScreenStackHeaderSubviewNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps } from 'react-native';
++import type { ViewProps } from 'react-native';
+ 
+ export type HeaderSubviewTypes =
+   | 'back'
+diff --git a/node_modules/react-native-screens/src/fabric/ScreenStackNativeComponent.ts b/node_modules/react-native-screens/src/fabric/ScreenStackNativeComponent.ts
+index b6e1a34..d4eb88e 100644
+--- a/node_modules/react-native-screens/src/fabric/ScreenStackNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/ScreenStackNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps } from 'react-native';
++import type { ViewProps } from 'react-native';
+ 
+ // eslint-disable-next-line @typescript-eslint/ban-types
+ type FinishTransitioningEvent = Readonly<{}>;
+diff --git a/node_modules/react-native-screens/src/fabric/SearchBarNativeComponent.ts b/node_modules/react-native-screens/src/fabric/SearchBarNativeComponent.ts
+index df774b9..da93e11 100644
+--- a/node_modules/react-native-screens/src/fabric/SearchBarNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/SearchBarNativeComponent.ts
+@@ -1,9 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeCommands, codegenNativeComponent } from 'react-native';
+-import type {
+-  CodegenTypes as CT,
+-  ViewProps,
++import type { ViewProps,
+   ColorValue,
+   HostComponent,
+ } from 'react-native';
+diff --git a/node_modules/react-native-screens/src/fabric/gamma/SplitViewHostNativeComponent.ts b/node_modules/react-native-screens/src/fabric/gamma/SplitViewHostNativeComponent.ts
+index 25e6a31..d755e57 100644
+--- a/node_modules/react-native-screens/src/fabric/gamma/SplitViewHostNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/gamma/SplitViewHostNativeComponent.ts
+@@ -1,8 +1,7 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+-import type {
+-  CodegenTypes as CT,
+-  ViewProps,
++import type { ViewProps,
+   HostComponent,
+ } from 'react-native';
+ import { codegenNativeCommands, codegenNativeComponent } from 'react-native';
+diff --git a/node_modules/react-native-screens/src/fabric/gamma/SplitViewScreenNativeComponent.ts b/node_modules/react-native-screens/src/fabric/gamma/SplitViewScreenNativeComponent.ts
+index 0fe92a7..b4f38bb 100644
+--- a/node_modules/react-native-screens/src/fabric/gamma/SplitViewScreenNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/gamma/SplitViewScreenNativeComponent.ts
+@@ -1,6 +1,7 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+-import type { CodegenTypes as CT, ViewProps } from 'react-native';
++import type { ViewProps } from 'react-native';
+ import { codegenNativeComponent } from 'react-native';
+ 
+ // eslint-disable-next-line @typescript-eslint/ban-types
+diff --git a/node_modules/react-native-screens/src/fabric/gamma/stack/StackScreenNativeComponent.ts b/node_modules/react-native-screens/src/fabric/gamma/stack/StackScreenNativeComponent.ts
+index 64e87f3..cc52898 100644
+--- a/node_modules/react-native-screens/src/fabric/gamma/stack/StackScreenNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/gamma/stack/StackScreenNativeComponent.ts
+@@ -1,6 +1,7 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+-import type { CodegenTypes as CT, ViewProps } from 'react-native';
++import type { ViewProps } from 'react-native';
+ import { codegenNativeComponent } from 'react-native';
+ 
+ // eslint-disable-next-line @typescript-eslint/ban-types
+diff --git a/node_modules/react-native-screens/src/fabric/safe-area/SafeAreaViewNativeComponent.ts b/node_modules/react-native-screens/src/fabric/safe-area/SafeAreaViewNativeComponent.ts
+index 01de59a..7c3b02a 100644
+--- a/node_modules/react-native-screens/src/fabric/safe-area/SafeAreaViewNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/safe-area/SafeAreaViewNativeComponent.ts
+@@ -1,8 +1,9 @@
+ // Implementation adapted from `react-native-safe-area-context`:
+ // https://github.com/AppAndFlow/react-native-safe-area-context/blob/v5.6.1/src/specs/NativeSafeAreaView.ts
+ 
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps } from 'react-native';
++import type { ViewProps } from 'react-native';
+ 
+ type InsetType = 'all' | 'system' | 'interface';
+ 
+diff --git a/node_modules/react-native-screens/src/fabric/tabs/TabsBottomAccessoryContentNativeComponent.ts b/node_modules/react-native-screens/src/fabric/tabs/TabsBottomAccessoryContentNativeComponent.ts
+index 3646447..2af532d 100644
+--- a/node_modules/react-native-screens/src/fabric/tabs/TabsBottomAccessoryContentNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/tabs/TabsBottomAccessoryContentNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps } from 'react-native';
++import type { ViewProps } from 'react-native';
+ 
+ type BottomAccessoryEnvironment = 'regular' | 'inline';
+ 
+diff --git a/node_modules/react-native-screens/src/fabric/tabs/TabsBottomAccessoryNativeComponent.ts b/node_modules/react-native-screens/src/fabric/tabs/TabsBottomAccessoryNativeComponent.ts
+index 6675dff..0640d6c 100644
+--- a/node_modules/react-native-screens/src/fabric/tabs/TabsBottomAccessoryNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/tabs/TabsBottomAccessoryNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ViewProps } from 'react-native';
++import type { ViewProps } from 'react-native';
+ 
+ type EnvironmentChangeEvent = {
+   environment: 'regular' | 'inline';
+diff --git a/node_modules/react-native-screens/src/fabric/tabs/TabsHostNativeComponent.ts b/node_modules/react-native-screens/src/fabric/tabs/TabsHostNativeComponent.ts
+index 3864c41..fb2deeb 100644
+--- a/node_modules/react-native-screens/src/fabric/tabs/TabsHostNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/tabs/TabsHostNativeComponent.ts
+@@ -1,7 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type { CodegenTypes as CT, ColorValue, ViewProps } from 'react-native';
++import type { ColorValue, ViewProps } from 'react-native';
+ 
+ // TODO: Report issue on RN repo, that nesting color value inside a struct does not work.
+ // Generated code is ok, but the value is not passed down correctly - whatever color is set
+diff --git a/node_modules/react-native-screens/src/fabric/tabs/TabsScreenNativeComponent.ts b/node_modules/react-native-screens/src/fabric/tabs/TabsScreenNativeComponent.ts
+index f6ce662..505184c 100644
+--- a/node_modules/react-native-screens/src/fabric/tabs/TabsScreenNativeComponent.ts
++++ b/node_modules/react-native-screens/src/fabric/tabs/TabsScreenNativeComponent.ts
+@@ -1,9 +1,8 @@
+ 'use client';
++import type { CodegenTypes as CT } from 'react-native/Libraries/Types/CodegenTypes';
+ 
+ import { codegenNativeComponent } from 'react-native';
+-import type {
+-  CodegenTypes as CT,
+-  ColorValue,
++import type { ColorValue,
+   ImageSource,
+   ProcessedColorValue,
+   ViewProps,
