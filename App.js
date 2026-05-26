@@ -34,11 +34,11 @@ export default function App() {
               />
             );
           },
-          tabBarActiveTintColor: '#2d6a4f',
-          tabBarInactiveTintColor: '#95c5a8',
+          tabBarActiveTintColor: '#1a5c3a',
+          tabBarInactiveTintColor: '#b8cfc3',
           tabBarStyle: {
-            backgroundColor: '#fefae0',
-            borderTopColor: '#b7e4c7',
+            backgroundColor: '#ffffff',
+            borderTopColor: '#e8f2ec',
             borderTopWidth: 1,
             paddingBottom: 6,
             paddingTop: 4,
@@ -49,13 +49,15 @@ export default function App() {
             fontWeight: '600',
           },
           headerStyle: {
-            backgroundColor: '#2d6a4f',
+            backgroundColor: '#ffffff',
           },
-          headerTintColor: '#fefae0',
+          headerTintColor: '#111c17',
           headerTitleStyle: {
             fontWeight: '700',
-            fontSize: 18,
+            fontSize: 17,
+            letterSpacing: -0.3,
           },
+          headerShadowVisible: false,
           headerTitleAlign: 'center',
         })}
       >

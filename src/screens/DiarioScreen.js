@@ -13,6 +13,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import Markdown from 'react-native-markdown-display';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 import MicButton from '../components/MicButton';
 import WaveformAnimation from '../components/WaveformAnimation';
@@ -42,7 +43,6 @@ export default function DiarioScreen() {
   const [phase, setPhase] = useState('idle');
   const scrollRef = useRef(null);
 
-  // When voice recording stops, sync final transcript to editable field
   useEffect(() => {
     if (!isRecording && transcript) {
       setEditableText(transcript);
@@ -107,15 +107,21 @@ export default function DiarioScreen() {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
-    year: 'numeric',
   });
 
-  const liveText = isRecording
-    ? partialTranscript || editableText
-    : editableText;
-
+  const liveText = isRecording ? partialTranscript || editableText : editableText;
   const showTranscriptArea = editableText || isRecording || !voiceAvailable;
   const showAnalyzeBtn = editableText && !isRecording;
+
+  const statusLabel = isRecording
+    ? 'Ouvindo...'
+    : phase === 'analyzed'
+    ? 'Análise concluída'
+    : phase === 'transcribed'
+    ? 'Revise e analise'
+    : voiceAvailable
+    ? 'Como foi sua alimentação hoje?'
+    : 'Descreva sua alimentação do dia';
 
   return (
     <KeyboardAvoidingView
@@ -130,24 +136,15 @@ export default function DiarioScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Date header */}
-        <View style={styles.dateHeader}>
+        {/* Date */}
+        <View style={styles.dateRow}>
+          <Ionicons name="calendar-outline" size={14} color={COLORS.textLight} />
           <Text style={styles.dateText}>{today}</Text>
         </View>
 
-        {/* Mic section */}
+        {/* Mic card */}
         <View style={styles.micCard}>
-          <Text style={styles.statusText}>
-            {isRecording
-              ? '🎙️ Gravando... fale sobre tudo que comeu'
-              : phase === 'analyzed'
-              ? '✅ Análise concluída!'
-              : phase === 'transcribed'
-              ? '✅ Relato capturado — revise e analise'
-              : voiceAvailable
-              ? '🎤 Toque para relatar sua alimentação do dia'
-              : '✏️ Digite seu relato alimentar abaixo'}
-          </Text>
+          <Text style={styles.statusLabel}>{statusLabel}</Text>
 
           <MicButton
             isRecording={isRecording}
@@ -155,17 +152,22 @@ export default function DiarioScreen() {
             disabled={isAnalyzing}
           />
 
-          {isRecording && <WaveformAnimation isActive={isRecording} />}
+          {isRecording
+            ? <WaveformAnimation isActive={isRecording} />
+            : voiceAvailable
+            ? <Text style={styles.micHint}>Toque para gravar</Text>
+            : null}
         </View>
 
         {/* Voice error */}
         {voiceError ? (
           <View style={styles.errorBox}>
-            <Text style={styles.errorText}>⚠️ {voiceError}</Text>
+            <Ionicons name="alert-circle-outline" size={16} color={COLORS.error} />
+            <Text style={styles.errorText}> {voiceError}</Text>
           </View>
         ) : null}
 
-        {/* Transcript / edit area */}
+        {/* Relato */}
         {showTranscriptArea ? (
           <View style={styles.section}>
             <Text style={styles.sectionLabel}>Relato do dia</Text>
@@ -178,29 +180,36 @@ export default function DiarioScreen() {
               }}
               multiline
               editable={!isRecording && !isAnalyzing}
-              placeholder="Seu relato aparecerá aqui..."
-              placeholderTextColor={COLORS.textLight}
+              placeholder="Descreva o que você comeu hoje..."
+              placeholderTextColor={COLORS.textMuted}
               textAlignVertical="top"
             />
-            <Text style={styles.hint}>✏️ Você pode editar antes de analisar</Text>
+            {!isRecording && (
+              <Text style={styles.editHint}>
+                <Ionicons name="create-outline" size={12} color={COLORS.textLight} /> Edite antes de analisar
+              </Text>
+            )}
           </View>
         ) : null}
 
-        {/* Analyze button */}
+        {/* Analyze */}
         {showAnalyzeBtn ? (
           <TouchableOpacity
-            style={[styles.analyzeBtn, isAnalyzing && styles.analyzeBtnDisabled]}
+            style={[styles.analyzeBtn, isAnalyzing && styles.analyzeBtnBusy]}
             onPress={handleAnalyze}
             disabled={isAnalyzing || !editableText.trim()}
-            activeOpacity={0.85}
+            activeOpacity={0.88}
           >
             {isAnalyzing ? (
               <>
                 <ActivityIndicator color={COLORS.white} size="small" />
-                <Text style={styles.analyzeBtnText}>  Dra. Nutri analisando...</Text>
+                <Text style={styles.analyzeBtnText}>  Analisando...</Text>
               </>
             ) : (
-              <Text style={styles.analyzeBtnText}>🔍 Analisar meu dia</Text>
+              <>
+                <Ionicons name="sparkles-outline" size={18} color={COLORS.white} />
+                <Text style={styles.analyzeBtnText}>  Analisar meu dia</Text>
+              </>
             )}
           </TouchableOpacity>
         ) : null}
@@ -208,14 +217,18 @@ export default function DiarioScreen() {
         {/* Analysis error */}
         {analysisError ? (
           <View style={styles.errorBox}>
-            <Text style={styles.errorText}>❌ {analysisError}</Text>
+            <Ionicons name="close-circle-outline" size={16} color={COLORS.error} />
+            <Text style={styles.errorText}> {analysisError}</Text>
           </View>
         ) : null}
 
         {/* Analysis result */}
         {analysis ? (
           <View style={styles.analysisCard}>
-            <Text style={styles.analysisTitle}>📊 Análise da Dra. Nutri</Text>
+            <View style={styles.analysisHeader}>
+              <Ionicons name="nutrition-outline" size={18} color={COLORS.midGreen} />
+              <Text style={styles.analysisTitle}>  Análise nutricional</Text>
+            </View>
             <View style={styles.divider} />
             <Markdown style={markdownStyles}>{analysis}</Markdown>
           </View>
@@ -230,133 +243,154 @@ export default function DiarioScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: COLORS.cream },
   container: { flex: 1 },
-  content: { padding: 18 },
+  content: { padding: 20 },
 
-  dateHeader: {
-    backgroundColor: COLORS.paleGreen,
-    borderRadius: 14,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    marginBottom: 20,
+  dateRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 18,
+    gap: 6,
   },
   dateText: {
-    color: COLORS.darkGreen,
-    fontSize: 14,
-    fontWeight: '600',
+    color: COLORS.textLight,
+    fontSize: 13,
+    fontWeight: '500',
     textTransform: 'capitalize',
   },
 
   micCard: {
     backgroundColor: COLORS.white,
-    borderRadius: 20,
-    paddingVertical: 28,
-    paddingHorizontal: 20,
+    borderRadius: 24,
+    paddingVertical: 32,
+    paddingHorizontal: 24,
     alignItems: 'center',
     gap: 16,
     marginBottom: 20,
     shadowColor: COLORS.cardShadow,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    elevation: 3,
   },
-  statusText: {
-    color: COLORS.textMedium,
-    fontSize: 14,
+  statusLabel: {
+    color: COLORS.textDark,
+    fontSize: 16,
+    fontWeight: '600',
     textAlign: 'center',
-    paddingHorizontal: 16,
-    lineHeight: 20,
+    letterSpacing: -0.2,
+  },
+  micHint: {
+    color: COLORS.textLight,
+    fontSize: 13,
   },
 
   section: { marginBottom: 18 },
   sectionLabel: {
-    color: COLORS.darkGreen,
-    fontWeight: '700',
-    fontSize: 15,
-    marginBottom: 8,
+    color: COLORS.textMedium,
+    fontWeight: '600',
+    fontSize: 13,
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
+    marginBottom: 10,
   },
   transcriptInput: {
     backgroundColor: COLORS.white,
     borderColor: COLORS.border,
     borderWidth: 1.5,
-    borderRadius: 14,
-    padding: 14,
+    borderRadius: 16,
+    padding: 16,
     fontSize: 15,
     color: COLORS.textDark,
     minHeight: 130,
-    lineHeight: 23,
-    shadowColor: COLORS.cardShadow,
+    lineHeight: 24,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
+    shadowOpacity: 0.03,
     shadowRadius: 4,
     elevation: 1,
   },
-  hint: { marginTop: 6, color: COLORS.textLight, fontSize: 12 },
+  editHint: {
+    marginTop: 7,
+    color: COLORS.textLight,
+    fontSize: 12,
+  },
 
   analyzeBtn: {
     backgroundColor: COLORS.darkGreen,
     borderRadius: 16,
-    paddingVertical: 17,
+    paddingVertical: 18,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
     marginBottom: 18,
     shadowColor: COLORS.darkGreen,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 7,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
+    elevation: 6,
   },
-  analyzeBtnDisabled: { opacity: 0.6 },
-  analyzeBtnText: { color: COLORS.white, fontSize: 16, fontWeight: '700' },
+  analyzeBtnBusy: { opacity: 0.7 },
+  analyzeBtnText: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+  },
 
   analysisCard: {
     backgroundColor: COLORS.white,
-    borderRadius: 18,
-    padding: 18,
-    borderLeftWidth: 5,
+    borderRadius: 20,
+    padding: 20,
+    borderLeftWidth: 3,
     borderLeftColor: COLORS.lightGreen,
-    shadowColor: COLORS.cardShadow,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.07,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  analysisHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   analysisTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
-    color: COLORS.darkGreen,
-    marginBottom: 10,
+    color: COLORS.textDark,
+    letterSpacing: -0.2,
   },
   divider: {
     height: 1,
-    backgroundColor: COLORS.border,
+    backgroundColor: COLORS.borderLight,
     marginBottom: 14,
   },
 
   errorBox: {
-    backgroundColor: '#fff0f1',
-    borderColor: COLORS.error,
+    backgroundColor: COLORS.errorBg,
+    borderColor: '#f5c6c6',
     borderWidth: 1,
     borderRadius: 12,
     padding: 13,
     marginBottom: 14,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
   },
-  errorText: { color: '#c1121f', fontSize: 13, lineHeight: 20 },
+  errorText: { color: COLORS.error, fontSize: 13, lineHeight: 20, flex: 1 },
 });
 
 const markdownStyles = {
-  body: { color: COLORS.textDark, fontSize: 14, lineHeight: 23 },
+  body: { color: COLORS.textDark, fontSize: 14, lineHeight: 24 },
   heading2: {
     color: COLORS.darkGreen,
     fontSize: 15,
     fontWeight: '700',
-    marginTop: 14,
+    marginTop: 16,
     marginBottom: 6,
+    letterSpacing: -0.2,
   },
-  strong: { color: COLORS.darkGreen, fontWeight: '700' },
+  strong: { color: COLORS.textDark, fontWeight: '700' },
   bullet_list: { marginLeft: 4 },
-  list_item: { marginBottom: 4 },
-  paragraph: { marginBottom: 8 },
+  list_item: { marginBottom: 5 },
+  paragraph: { marginBottom: 10 },
 };

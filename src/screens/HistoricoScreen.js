@@ -62,10 +62,12 @@ export default function HistoricoScreen() {
   if (!history.length) {
     return (
       <View style={styles.center}>
-        <Text style={styles.emptyIcon}>📅</Text>
-        <Text style={styles.emptyTitle}>Histórico vazio</Text>
+        <View style={styles.emptyIconWrap}>
+          <Ionicons name="time-outline" size={36} color={COLORS.textLight} />
+        </View>
+        <Text style={styles.emptyTitle}>Nenhum registro ainda</Text>
         <Text style={styles.emptyText}>
-          Após analisar seu primeiro dia na aba Diário, o registro aparecerá aqui.
+          Após analisar seu primeiro dia na aba Diário, ele aparecerá aqui.
         </Text>
       </View>
     );
@@ -82,31 +84,31 @@ export default function HistoricoScreen() {
           <TouchableOpacity
             style={styles.card}
             onPress={() => setSelected(item)}
-            activeOpacity={0.82}
+            activeOpacity={0.84}
           >
-            <View style={styles.cardHeader}>
+            <View style={styles.cardTop}>
               <View style={styles.dateChip}>
-                <Ionicons name="calendar-outline" size={13} color={COLORS.darkGreen} />
+                <Ionicons name="calendar-outline" size={12} color={COLORS.midGreen} />
                 <Text style={styles.cardDate}> {item.date}</Text>
               </View>
               <TouchableOpacity
                 onPress={() => handleDelete(item.id)}
-                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
-                <Ionicons name="trash-outline" size={18} color={COLORS.textLight} />
+                <Ionicons name="trash-outline" size={17} color={COLORS.textMuted} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.cardRelato} numberOfLines={3}>
+            <Text style={styles.cardRelato} numberOfLines={2}>
               {item.relato}
             </Text>
             <View style={styles.cardFooter}>
-              <Text style={styles.cardSeeMore}>Ver análise completa →</Text>
+              <Text style={styles.cardSeeMore}>Ver análise</Text>
+              <Ionicons name="chevron-forward" size={14} color={COLORS.lightGreen} />
             </View>
           </TouchableOpacity>
         )}
       />
 
-      {/* Detail Modal */}
       <Modal
         visible={!!selected}
         animationType="slide"
@@ -116,14 +118,15 @@ export default function HistoricoScreen() {
         <View style={styles.modal}>
           <View style={styles.modalHeader}>
             <View>
-              <Text style={styles.modalTitle}>📅 {selected?.date}</Text>
+              <Text style={styles.modalLabel}>Registro</Text>
+              <Text style={styles.modalDate}>{selected?.date}</Text>
             </View>
             <TouchableOpacity
               style={styles.closeBtn}
               onPress={() => setSelected(null)}
               activeOpacity={0.8}
             >
-              <Ionicons name="close" size={22} color={COLORS.white} />
+              <Ionicons name="close" size={20} color={COLORS.textMedium} />
             </TouchableOpacity>
           </View>
 
@@ -132,12 +135,12 @@ export default function HistoricoScreen() {
             contentContainerStyle={styles.modalContent}
             showsVerticalScrollIndicator={false}
           >
-            <Text style={styles.modalSectionTitle}>📝 Relato do dia</Text>
+            <Text style={styles.modalSectionLabel}>Relato</Text>
             <View style={styles.relatoBox}>
               <Text style={styles.relatoText}>{selected?.relato}</Text>
             </View>
 
-            <Text style={styles.modalSectionTitle}>📊 Análise da Dra. Nutri</Text>
+            <Text style={styles.modalSectionLabel}>Análise nutricional</Text>
             <View style={styles.analysisBox}>
               <Markdown style={markdownStyles}>{selected?.analysis || ''}</Markdown>
             </View>
@@ -159,12 +162,18 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
     padding: 32,
   },
-  emptyIcon: { fontSize: 60, marginBottom: 14 },
+  emptyIconWrap: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 24,
+    padding: 20,
+    marginBottom: 18,
+  },
   emptyTitle: {
-    fontSize: 19,
+    fontSize: 18,
     fontWeight: '700',
-    color: COLORS.darkGreen,
+    color: COLORS.textDark,
     marginBottom: 8,
+    letterSpacing: -0.3,
   },
   emptyText: {
     fontSize: 14,
@@ -173,20 +182,20 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
 
-  list: { padding: 16, gap: 14 },
+  list: { padding: 16, gap: 12 },
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 18,
     padding: 16,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.lightGreen,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.07,
+    shadowOpacity: 0.05,
     shadowRadius: 8,
-    elevation: 3,
+    elevation: 2,
   },
-  cardHeader: {
+  cardTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -195,74 +204,87 @@ const styles = StyleSheet.create({
   dateChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.paleGreen,
+    backgroundColor: COLORS.mint,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 20,
   },
-  cardDate: { fontWeight: '700', color: COLORS.darkGreen, fontSize: 13 },
+  cardDate: { fontWeight: '600', color: COLORS.midGreen, fontSize: 12 },
   cardRelato: {
     color: COLORS.textMedium,
     fontSize: 13,
     lineHeight: 20,
-    marginBottom: 10,
+    marginBottom: 12,
   },
-  cardFooter: { alignItems: 'flex-end' },
-  cardSeeMore: { color: COLORS.lightGreen, fontSize: 13, fontWeight: '700' },
+  cardFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: 2,
+  },
+  cardSeeMore: { color: COLORS.lightGreen, fontSize: 13, fontWeight: '600' },
 
   modal: { flex: 1, backgroundColor: COLORS.cream },
   modalHeader: {
-    backgroundColor: COLORS.darkGreen,
+    backgroundColor: COLORS.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 52,
-    paddingBottom: 16,
+    paddingTop: 56,
+    paddingBottom: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.borderLight,
   },
-  modalTitle: { color: COLORS.white, fontSize: 18, fontWeight: '700' },
+  modalLabel: { color: COLORS.textLight, fontSize: 11, fontWeight: '600', letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 2 },
+  modalDate: { color: COLORS.textDark, fontSize: 18, fontWeight: '700', letterSpacing: -0.3 },
   closeBtn: {
-    backgroundColor: 'rgba(255,255,255,0.18)',
+    backgroundColor: COLORS.surface,
     padding: 8,
     borderRadius: 20,
   },
 
   modalScroll: { flex: 1 },
   modalContent: { padding: 20 },
-  modalSectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: COLORS.darkGreen,
-    marginTop: 18,
+  modalSectionLabel: {
+    color: COLORS.textMedium,
+    fontWeight: '600',
+    fontSize: 11,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    marginTop: 20,
     marginBottom: 10,
   },
   relatoBox: {
     backgroundColor: COLORS.white,
     borderRadius: 14,
-    padding: 14,
-    borderColor: COLORS.border,
-    borderWidth: 1.5,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
   },
-  relatoText: { color: COLORS.textDark, fontSize: 14, lineHeight: 22 },
+  relatoText: { color: COLORS.textDark, fontSize: 14, lineHeight: 23 },
   analysisBox: {
     backgroundColor: COLORS.white,
     borderRadius: 14,
-    padding: 14,
-    borderLeftWidth: 4,
+    padding: 16,
+    borderLeftWidth: 3,
     borderLeftColor: COLORS.lightGreen,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
   },
 });
 
 const markdownStyles = {
-  body: { color: COLORS.textDark, fontSize: 14, lineHeight: 23 },
+  body: { color: COLORS.textDark, fontSize: 14, lineHeight: 24 },
   heading2: {
     color: COLORS.darkGreen,
     fontSize: 15,
     fontWeight: '700',
-    marginTop: 12,
+    marginTop: 14,
     marginBottom: 6,
+    letterSpacing: -0.2,
   },
-  strong: { color: COLORS.darkGreen, fontWeight: '700' },
-  list_item: { marginBottom: 4 },
-  paragraph: { marginBottom: 8 },
+  strong: { color: COLORS.textDark, fontWeight: '700' },
+  list_item: { marginBottom: 5 },
+  paragraph: { marginBottom: 10 },
 };

@@ -19,7 +19,7 @@ const API_KEY_STORE = 'anthropic_api_key';
 
 const maskKey = (key) => {
   if (!key || key.length < 12) return key;
-  return key.slice(0, 10) + '••••••••••' + key.slice(-4);
+  return key.slice(0, 8) + ' •••••••••• ' + key.slice(-4);
 };
 
 export default function ConfigScreen() {
@@ -61,8 +61,8 @@ export default function ConfigScreen() {
 
   const handleDelete = () => {
     Alert.alert(
-      'Remover API Key',
-      'Sua chave será apagada do dispositivo. Você precisará inserir novamente para usar o app.',
+      'Remover chave',
+      'Sua chave será apagada do dispositivo.',
       [
         { text: 'Cancelar', style: 'cancel' },
         {
@@ -92,34 +92,30 @@ export default function ConfigScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        {/* Header card */}
-        <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>🔑 API Key da Anthropic</Text>
-          <Text style={styles.infoText}>
-            O NutriCheck usa a IA Claude (Anthropic) para analisar sua alimentação. Sua chave é
-            armazenada com segurança no dispositivo e nunca sai dele.
-          </Text>
-          <TouchableOpacity
-            style={styles.linkBtn}
-            onPress={() => Linking.openURL('https://console.anthropic.com')}
-          >
-            <Ionicons name="open-outline" size={14} color={COLORS.darkGreen} />
-            <Text style={styles.linkText}> Obter chave em console.anthropic.com</Text>
-          </TouchableOpacity>
-        </View>
+        {/* API Key section */}
+        <Text style={styles.sectionLabel}>API Key</Text>
 
-        {/* Key status */}
-        <View style={styles.section}>
-          <Text style={styles.label}>Chave configurada</Text>
+        <View style={styles.card}>
+          <View style={styles.cardRow}>
+            <View style={styles.iconWrap}>
+              <Ionicons name="key-outline" size={18} color={COLORS.midGreen} />
+            </View>
+            <View style={styles.cardText}>
+              <Text style={styles.cardTitle}>Anthropic API Key</Text>
+              <Text style={styles.cardDesc}>
+                Armazenada com segurança no dispositivo. Nunca sai dele.
+              </Text>
+            </View>
+          </View>
 
           {storedMask && !editing ? (
             <View style={styles.keyRow}>
               <View style={styles.keyDisplay}>
-                <Ionicons name="lock-closed" size={16} color={COLORS.lightGreen} />
+                <Ionicons name="lock-closed" size={13} color={COLORS.lightGreen} />
                 <Text style={styles.keyMask}> {storedMask}</Text>
               </View>
-              <TouchableOpacity onPress={handleEdit} style={styles.editChip}>
-                <Text style={styles.editChipText}>Alterar</Text>
+              <TouchableOpacity onPress={handleEdit} style={styles.chip}>
+                <Text style={styles.chipText}>Alterar</Text>
               </TouchableOpacity>
             </View>
           ) : null}
@@ -130,7 +126,7 @@ export default function ConfigScreen() {
               value={apiKey}
               onChangeText={setApiKey}
               placeholder="sk-ant-api03-..."
-              placeholderTextColor={COLORS.textLight}
+              placeholderTextColor={COLORS.textMuted}
               secureTextEntry
               autoCapitalize="none"
               autoCorrect={false}
@@ -139,46 +135,57 @@ export default function ConfigScreen() {
           ) : null}
         </View>
 
-        {/* Save button */}
         {showInput ? (
           <TouchableOpacity
-            style={[styles.saveBtn, saved && styles.savedBtn]}
+            style={[styles.primaryBtn, saved && styles.savedBtn]}
             onPress={handleSave}
-            activeOpacity={0.85}
+            activeOpacity={0.88}
           >
             <Ionicons
-              name={saved ? 'checkmark-circle' : 'lock-closed'}
+              name={saved ? 'checkmark-circle-outline' : 'lock-closed-outline'}
               size={18}
               color={COLORS.white}
             />
-            <Text style={styles.saveBtnText}>
-              {saved ? '  Chave salva com segurança!' : '  Salvar chave'}
+            <Text style={styles.primaryBtnText}>
+              {saved ? '  Chave salva!' : '  Salvar chave'}
             </Text>
           </TouchableOpacity>
         ) : null}
 
-        {/* Delete button */}
+        <TouchableOpacity
+          style={styles.linkRow}
+          onPress={() => Linking.openURL('https://console.anthropic.com')}
+        >
+          <Ionicons name="open-outline" size={14} color={COLORS.midGreen} />
+          <Text style={styles.linkText}> Obter chave em console.anthropic.com</Text>
+        </TouchableOpacity>
+
         {storedMask && !editing ? (
-          <TouchableOpacity style={styles.deleteBtn} onPress={handleDelete}>
-            <Ionicons name="trash-outline" size={16} color={COLORS.error} />
-            <Text style={styles.deleteBtnText}>  Remover API Key</Text>
+          <TouchableOpacity style={styles.dangerBtn} onPress={handleDelete}>
+            <Ionicons name="trash-outline" size={15} color={COLORS.error} />
+            <Text style={styles.dangerBtnText}>  Remover chave</Text>
           </TouchableOpacity>
         ) : null}
 
         {/* About */}
-        <View style={styles.aboutCard}>
-          <Text style={styles.aboutTitle}>Sobre o NutriCheck</Text>
-          <View style={styles.aboutRow}>
-            <Ionicons name="information-circle-outline" size={16} color={COLORS.textMedium} />
-            <Text style={styles.aboutText}> Versão 1.0.0</Text>
+        <Text style={[styles.sectionLabel, { marginTop: 32 }]}>Sobre</Text>
+
+        <View style={styles.card}>
+          <View style={styles.cardRow}>
+            <View style={styles.iconWrap}>
+              <Ionicons name="nutrition-outline" size={18} color={COLORS.midGreen} />
+            </View>
+            <View style={styles.cardText}>
+              <Text style={styles.cardTitle}>NutriCheck</Text>
+              <Text style={styles.cardDesc}>Versão 1.0.0</Text>
+            </View>
           </View>
           <Text style={styles.aboutDesc}>
-            Seu agente nutricional pessoal. Cadastre seu plano alimentar, grave um relato no
-            final do dia e receba uma análise detalhada da Dra. Nutri comparando o que você comeu
-            com o que foi prescrito.
+            Registre sua alimentação diária e receba uma análise personalizada baseada no seu plano nutricional.
           </Text>
-          <View style={styles.techPill}>
-            <Text style={styles.techText}>Powered by Claude (Anthropic)</Text>
+          <View style={styles.poweredRow}>
+            <Ionicons name="sparkles-outline" size={12} color={COLORS.textLight} />
+            <Text style={styles.poweredText}> Claude · Anthropic</Text>
           </View>
         </View>
 
@@ -191,127 +198,137 @@ export default function ConfigScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: COLORS.cream },
   container: { flex: 1 },
-  content: { padding: 18 },
+  content: { padding: 20 },
 
-  infoCard: {
-    backgroundColor: COLORS.paleGreen,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 22,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.lightGreen,
-  },
-  infoTitle: { fontSize: 17, fontWeight: '700', color: COLORS.darkGreen, marginBottom: 6 },
-  infoText: { fontSize: 13, color: COLORS.textMedium, lineHeight: 20, marginBottom: 10 },
-  linkBtn: { flexDirection: 'row', alignItems: 'center' },
-  linkText: {
-    color: COLORS.darkGreen,
+  sectionLabel: {
+    color: COLORS.textMedium,
     fontWeight: '600',
-    fontSize: 13,
-    textDecorationLine: 'underline',
+    fontSize: 11,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    marginBottom: 12,
   },
 
-  section: { marginBottom: 16 },
-  label: { color: COLORS.darkGreen, fontWeight: '700', fontSize: 15, marginBottom: 10 },
+  card: {
+    backgroundColor: COLORS.white,
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+    gap: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 1,
+  },
+  cardRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  iconWrap: {
+    backgroundColor: COLORS.mint,
+    borderRadius: 10,
+    padding: 8,
+  },
+  cardText: { flex: 1 },
+  cardTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: COLORS.textDark,
+    marginBottom: 2,
+    letterSpacing: -0.2,
+  },
+  cardDesc: { fontSize: 13, color: COLORS.textMedium, lineHeight: 19 },
 
   keyRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.border,
-    borderWidth: 1.5,
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
+    backgroundColor: COLORS.surface,
+    borderRadius: 12,
+    paddingHorizontal: 13,
+    paddingVertical: 11,
   },
   keyDisplay: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  keyMask: { color: COLORS.textMedium, fontSize: 15, letterSpacing: 1 },
-  editChip: {
-    backgroundColor: COLORS.paleGreen,
+  keyMask: { color: COLORS.textMedium, fontSize: 13, letterSpacing: 1 },
+  chip: {
+    backgroundColor: COLORS.mint,
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 20,
-    marginLeft: 8,
   },
-  editChipText: { color: COLORS.darkGreen, fontWeight: '700', fontSize: 13 },
+  chipText: { color: COLORS.midGreen, fontWeight: '700', fontSize: 12 },
 
   input: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.surface,
     borderColor: COLORS.border,
     borderWidth: 1.5,
-    borderRadius: 14,
+    borderRadius: 12,
     padding: 14,
-    fontSize: 15,
+    fontSize: 14,
     color: COLORS.textDark,
     letterSpacing: 0.5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 1,
   },
 
-  saveBtn: {
+  primaryBtn: {
     backgroundColor: COLORS.darkGreen,
     borderRadius: 16,
-    paddingVertical: 17,
+    paddingVertical: 18,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 10,
     shadowColor: COLORS.darkGreen,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 7,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
+    elevation: 6,
   },
   savedBtn: { backgroundColor: COLORS.lightGreen },
-  saveBtnText: { color: COLORS.white, fontSize: 16, fontWeight: '700' },
+  primaryBtnText: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+  },
 
-  deleteBtn: {
-    borderColor: COLORS.error,
+  linkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    marginBottom: 6,
+  },
+  linkText: {
+    color: COLORS.midGreen,
+    fontWeight: '600',
+    fontSize: 13,
+    textDecorationLine: 'underline',
+  },
+
+  dangerBtn: {
+    borderColor: '#f5c6c6',
     borderWidth: 1.5,
     borderRadius: 14,
     paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 22,
+    marginTop: 4,
+    marginBottom: 12,
   },
-  deleteBtnText: { color: COLORS.error, fontWeight: '700', fontSize: 14 },
+  dangerBtnText: { color: COLORS.error, fontWeight: '600', fontSize: 14 },
 
-  aboutCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 18,
-    padding: 18,
-    marginTop: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  aboutTitle: {
-    fontWeight: '700',
-    color: COLORS.darkGreen,
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  aboutRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
-  aboutText: { color: COLORS.textMedium, fontSize: 13 },
   aboutDesc: {
-    color: COLORS.textMedium,
     fontSize: 13,
+    color: COLORS.textMedium,
     lineHeight: 21,
-    marginBottom: 14,
   },
-  techPill: {
-    alignSelf: 'flex-start',
-    backgroundColor: COLORS.paleGreen,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 20,
+  poweredRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  techText: { color: COLORS.darkGreen, fontWeight: '700', fontSize: 12 },
+  poweredText: { color: COLORS.textMuted, fontSize: 12, fontWeight: '500' },
 });
